@@ -1,30 +1,31 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
-const EmptyPage = {
-    template: '<div></div>'
-}
+import HomeView from '../views/HomeView.vue'
+import ArticlesView from '../views/ArticlesView.vue'
+import ArticleDetailView from '../views/ArticleDetailView.vue'
+import AdminView from '../views/AdminView.vue'
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        component: EmptyPage
+        component: HomeView
     },
     {
         path: '/articles',
         name: 'articles',
-        component: EmptyPage
+        component: ArticlesView
     },
     {
         path: '/articles/:id',
         name: 'article',
-        component: EmptyPage
+        component: ArticleDetailView
     },
     {
         path: '/admin',
         name: 'admin',
-        component: EmptyPage
+        component: AdminView
     }
 ]
 

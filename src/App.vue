@@ -1,12 +1,8 @@
+
 <script setup>
 import { ref, computed, nextTick } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute, RouterView } from 'vue-router'
 import SiteHeader from './components/SiteHeader.vue'
-import ArticleCard from './components/ArticleCard.vue'
-import HomeView from './views/HomeView.vue'
-import ArticlesView from './views/ArticlesView.vue'
-import ArticleDetailView from './views/ArticleDetailView.vue'
-import AdminView from './views/AdminView.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -69,105 +65,165 @@ const initialArticles = [
     content:
       "A high-protein diet is very important for people who train regularly and want to lose weight. Protein helps build muscle and keeps you full longer.\n\nProtein also helps repair muscles and supports energy levels during the day. For active people, it is recommended to eat around 100–120 grams of protein per day. Good sources include chicken, fish, eggs, Greek yogurt, cottage cheese, and other dairy products.\n\nIt is also important to include a lot of vegetables in your meals, as they provide vitamins, minerals, and fibre that support digestion. If your goal is weight loss, you should be in a calorie deficit, meaning you consume fewer calories than your body uses. Combining protein, vegetables, and a calorie deficit helps reduce body fat while maintaining muscle mass.",
     image: "/images/protein-meal-original.png",
-    extraImages: ["/images/protein-food-original.png", "/images/protein-meat-original.png"],
+    extraImages: [
+      "/images/protein-food-original.png",
+      "/images/protein-meat-original.png"
+    ],
   },
 ]
-const articles = ref(initialArticles.map(a => ({ ...a })))
-const screen = computed(() => {
-  if (route.name === 'article') return 'article'
-  return route.name || 'home'
-})
 
+const articles = ref(initialArticles.map(article => ({ ...article })))
 
-const selectedId = ref(1)
-const search = ref('')
+const screen = computed(() => route.name || 'home')
+
 const filter = ref('All')
 const editingId = ref(null)
 const showForm = ref(false)
-const blankArticle = () => ({ title: '', category: 'Fitness', description: '', content: '', image: '', video: '', extraImages: [] })
+
+const blankArticle = () => ({
+  title: '',
+  category: 'Fitness',
+  description: '',
+  content: '',
+  image: '',
+  video: '',
+  extraImages: []
+})
+
 const form = ref(blankArticle())
 
 const selectedArticle = computed(() => {
-  const id = route.name === 'article'
-    ? Number(route.params.id)
-    : selectedId.value
-
-  return articles.value.find(a => a.id === id)
+  const id = Number(route.params.id)
+  return articles.value.find(article => article.id === id)
 })
 
-const filteredArticles = computed(() => articles.value.filter(a => a.title.toLowerCase().includes(search.value.trim().toLowerCase()) && (filter.value === 'All' || a.category === filter.value)))
 const categories = [
-  { name: 'Fitness', text: 'Improve your strength and health.', image: '/images/fitness-original.png' },
-  { name: 'Nutrition', text: 'Eat better and feel better.', image: '/images/nutrition-original.png' },
-  { name: 'Wellbeing', text: 'Balance your body and mind.', image: '/images/yoga-original.png' },
+  {
+    name: 'Fitness',
+    text: 'Improve your strength and health.',
+    image: '/images/fitness-original.png'
+  },
+  {
+    name: 'Nutrition',
+    text: 'Eat better and feel better.',
+    image: '/images/nutrition-original.png'
+  },
+  {
+    name: 'Wellbeing',
+    text: 'Balance your body and mind.',
+    image: '/images/yoga-original.png'
+  }
 ]
 
- function navigate(to) {
-   router.push({ name: to })
-   window.scrollTo({ top: 0, behavior: 'smooth' })
- }
-
-function showArticles(category = 'All') { filter.value = category; search.value = ''; navigate('articles') }
-
-function showArticle(article) {
-  selectedId.value = article.id
-  router.push({ name: 'article', params: { id: article.id } })
+function navigate(to) {
+  router.push({ name: to })
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-function showAdmin() { showForm.value = false; navigate('admin') }
-function startAdd() { editingId.value = null; form.value = blankArticle(); showForm.value = true }
-async function startEdit(article) { editingId.value = article.id; form.value = { ...article, extraImages: [...(article.extraImages || [])] }; showForm.value = true; await nextTick(); document.getElementById('article-form')?.scrollIntoView({ behavior: 'smooth' }) }
-function saveArticle() {
-  if (editingId.value === null) articles.value.push({ ...form.value, id: Math.max(0, ...articles.value.map(a => a.id)) + 1, image: form.value.image || '/images/fitness-original.png' })
-  else articles.value = articles.value.map(a => a.id === editingId.value ? { ...a, ...form.value } : a)
-  showForm.value = false; editingId.value = null; form.value = blankArticle()
+function showArticles(category = 'All') {
+  filter.value = category
+  navigate('articles')
 }
-function deleteArticle(article) { if (window.confirm(`Delete “${article.title}”?`)) { articles.value = articles.value.filter(a => a.id !== article.id); if (editingId.value === article.id) showForm.value = false } }
+
+function showArticle(article) {
+  router.push({
+    name: 'article',
+    params: { id: article.id }
+  })
+
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function startAdd() {
+  editingId.value = null
+  form.value = blankArticle()
+  showForm.value = true
+}
+
+async function startEdit(article) {
+  editingId.value = article.id
+
+  form.value = {
+    ...article,
+    extraImages: [...(article.extraImages || [])]
+  }
+
+  showForm.value = true
+
+  await nextTick()
+
+  document.getElementById('article-form')
+    ?.scrollIntoView({ behavior: 'smooth' })
+}
+
+function saveArticle() {
+  if (editingId.value === null) {
+    articles.value.push({
+      ...form.value,
+      id: Math.max(0, ...articles.value.map(a => a.id)) + 1,
+      image: form.value.image || '/images/fitness-original.png'
+    })
+  } else {
+    articles.value = articles.value.map(article =>
+      article.id === editingId.value
+        ? { ...article, ...form.value }
+        : article
+    )
+  }
+
+  showForm.value = false
+  editingId.value = null
+  form.value = blankArticle()
+}
+
+function deleteArticle(article) {
+  if (window.confirm(`Delete “${article.title}”?`)) {
+    articles.value = articles.value.filter(a => a.id !== article.id)
+
+    if (editingId.value === article.id) {
+      showForm.value = false
+    }
+  }
+}
 </script>
 
 <template>
   <div class="app-shell" id="top">
 
-<SiteHeader :screen="screen" @navigate="navigate" />
+    <SiteHeader
+      :screen="screen"
+      @navigate="navigate"
+    />
 
-   <HomeView
-     v-if="screen === 'home'"
-     :categories="categories"
-     @show-articles="showArticles"
-   />
+    <RouterView v-slot="{ Component }">
+      <component
+        :is="Component"
 
+        :categories="categories"
+        :articles="articles"
+        :category="filter"
 
+        :article="selectedArticle"
 
-<ArticlesView
-  v-else-if="screen === 'articles'"
-  :articles="articles"
-  :category="filter"
-  @read="showArticle"
-/>
+        :show-form="showForm"
+        :editing-id="editingId"
+        :form="form"
 
+        @show-articles="showArticles"
+        @read="showArticle"
+        @back="navigate('articles')"
 
-<ArticleDetailView
-  v-else-if="screen === 'article' && selectedArticle"
-  :article="selectedArticle"
-  @back="navigate('articles')"
-/>
+        @add="startAdd"
+        @edit="startEdit"
+        @delete="deleteArticle"
+        @save="saveArticle"
+        @cancel="showForm = false"
+      />
+    </RouterView>
 
+    <footer>
+      <p class="copyright">© 2026 Healthy Living</p>
+    </footer>
 
-<AdminView
-  v-else-if="screen === 'admin'"
-  :articles="articles"
-  :show-form="showForm"
-  :editing-id="editingId"
-  :form="form"
-  @add="startAdd"
-  @edit="startEdit"
-  @delete="deleteArticle"
-  @save="saveArticle"
-  @cancel="showForm = false"
-/>
-
-
-    <footer><p class="copyright">© 2026 Healthy Living</p></footer>
   </div>
 </template>
