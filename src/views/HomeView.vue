@@ -1,5 +1,7 @@
 
 <script setup>
+// EN: Receive the categories from App.vue.
+// RU: Получаем категории из App.vue.
 defineProps({
   categories: {
     type: Array,
@@ -21,6 +23,8 @@ const emit = defineEmits(['showArticles'])
       aria-label="Article categories"
     >
       <div class="category-grid">
+        <!-- EN: Display the categories and open articles when a category is clicked. -->
+        <!-- RU: Показываем категории и открываем статьи при нажатии на категорию. -->
         <button
           v-for="category in categories"
           :key="category.name"
