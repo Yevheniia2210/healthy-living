@@ -1,7 +1,7 @@
 
 <script setup>
-// EN: Receive the categories from App.vue.
-// RU: Получаем категории из App.vue.
+// EN: Props receive the categories from App.vue.
+// RU: Props получают категории из App.vue.
 defineProps({
   categories: {
     type: Array,
@@ -9,6 +9,8 @@ defineProps({
   }
 })
 
+// EN: Define an event to send the selected category to the parent component.
+// RU: Объявляем событие для передачи выбранной категории родительскому компоненту.
 const emit = defineEmits(['showArticles'])
 </script>
 
@@ -23,8 +25,11 @@ const emit = defineEmits(['showArticles'])
       aria-label="Article categories"
     >
       <div class="category-grid">
-        <!-- EN: Display the categories and open articles when a category is clicked. -->
-        <!-- RU: Показываем категории и открываем статьи при нажатии на категорию. -->
+        <!-- EN: v-for creates a button for each category. -->
+        <!-- RU: v-for создаёт кнопку для каждой категории. -->
+
+        <!-- EN: @click sends the selected category using emit. -->
+        <!-- RU: @click передаёт выбранную категорию с помощью emit. -->
         <button
           v-for="category in categories"
           :key="category.name"
