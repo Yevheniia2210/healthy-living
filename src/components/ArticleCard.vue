@@ -1,5 +1,7 @@
 
 <script setup>
+// EN: Receive the article information from the parent component.
+// RU: Получаем информацию о статье из родительского компонента.
 defineProps({
   article: {
     type: Object,
@@ -35,6 +37,8 @@ const emit = defineEmits(['read'])
       <h3>{{ article.title }}</h3>
       <p>{{ article.description }}</p>
 
+      <!-- EN: The Read More button opens the full article. -->
+      <!-- RU: Кнопка Read More открывает полную статью. -->
       <button @click="emit('read', article)">
         Read More
       </button>
