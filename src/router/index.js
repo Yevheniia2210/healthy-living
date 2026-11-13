@@ -1,11 +1,17 @@
 
+// EN: Import Vue Router to manage navigation between pages.
+// RU: Импортируем Vue Router для управления переходами между страницами.
 import { createRouter, createWebHistory } from 'vue-router'
 
+// EN: Import the four page components of the website.
+// RU: Импортируем четыре компонента страниц сайта.
 import HomeView from '../views/HomeView.vue'
 import ArticlesView from '../views/ArticlesView.vue'
 import ArticleDetailView from '../views/ArticleDetailView.vue'
 import AdminView from '../views/AdminView.vue'
 
+// EN: Define the routes and connect each URL to its page.
+// RU: Определяем маршруты и связываем каждый адрес с его страницей.
 const routes = [
     {
         path: '/',
