@@ -3,6 +3,8 @@
 import { ref, computed } from 'vue'
 import ArticleCard from '../components/ArticleCard.vue'
 
+// EN: Receive the articles and selected category from App.vue.
+// RU: Получаем статьи и выбранную категорию из App.vue.
 const props = defineProps({
   articles: {
     type: Array,
@@ -19,6 +21,8 @@ const emit = defineEmits(['read'])
 const search = ref('')
 const filter = ref(props.category)
 
+// EN: This code searches articles by title and filters them by category.
+// RU: Этот код ищет статьи по названию и фильтрует их по категории.
 const filteredArticles = computed(() =>
   props.articles.filter(article =>
     article.title.toLowerCase().includes(search.value.trim().toLowerCase()) &&
@@ -63,6 +67,8 @@ const filteredArticles = computed(() =>
           </div>
         </div>
 
+        <!-- EN: Display matching articles or show a message if none are found. -->
+        <!-- RU: Показываем найденные статьи или сообщение, если ничего не найдено. -->
         <div v-if="filteredArticles.length" class="article-grid">
           <ArticleCard
             v-for="article in filteredArticles"
