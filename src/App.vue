@@ -1,5 +1,7 @@
 
 <script setup>
+// EN: These imports connect Vue, Vue Router and the website header.
+// RU: Эти импорты подключают Vue, Vue Router и шапку сайта.
 import { ref, computed, nextTick } from 'vue'
 import { useRouter, useRoute, RouterView } from 'vue-router'
 import SiteHeader from './components/SiteHeader.vue'
@@ -7,6 +9,8 @@ import SiteHeader from './components/SiteHeader.vue'
 const router = useRouter()
 const route = useRoute()
 
+// EN: This array stores the six original articles and their information.
+// RU: Этот массив хранит шесть исходных статей и информацию о них.
 const initialArticles = [
   {
     id: 1,
@@ -72,6 +76,8 @@ const initialArticles = [
   },
 ]
 
+// EN: ref stores articles that can change and updates the page automatically.
+// RU: ref хранит изменяемые статьи и автоматически обновляет страницу.
 const articles = ref(initialArticles.map(article => ({ ...article })))
 
 const screen = computed(() => route.name || 'home')
@@ -92,11 +98,15 @@ const blankArticle = () => ({
 
 const form = ref(blankArticle())
 
+// EN: computed finds the selected article using its ID from the URL.
+// RU: computed находит выбранную статью по её ID из адреса страницы.
 const selectedArticle = computed(() => {
   const id = Number(route.params.id)
   return articles.value.find(article => article.id === id)
 })
 
+// EN: These are the three website categories: Fitness, Nutrition and Wellbeing.
+// RU: Это три категории сайта: фитнес, питание и здоровый образ жизни.
 const categories = [
   {
     name: 'Fitness',
@@ -195,6 +205,8 @@ function deleteArticle(article) {
       @navigate="navigate"
     />
 
+    <!-- EN: RouterView displays the current page and connects it to the article data. -->
+    <!-- RU: RouterView отображает текущую страницу и связывает её с данными статей. -->
     <RouterView v-slot="{ Component }">
       <component
         :is="Component"
