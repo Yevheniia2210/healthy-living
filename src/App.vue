@@ -1,7 +1,6 @@
-
 <script setup>
-// EN: These imports connect Vue, Vue Router and the website header.
-// RU: Эти импорты подключают Vue, Vue Router и шапку сайта.
+// EN: Imports Vue, Vue Router and the website header.
+// RU: Импортирует Vue, Vue Router и шапку сайта.
 import { ref, computed, nextTick } from 'vue'
 import { useRouter, useRoute, RouterView } from 'vue-router'
 import SiteHeader from './components/SiteHeader.vue'
@@ -9,8 +8,8 @@ import SiteHeader from './components/SiteHeader.vue'
 const router = useRouter()
 const route = useRoute()
 
-// EN: This array stores the six original articles and their information.
-// RU: Этот массив хранит шесть исходных статей и информацию о них.
+// EN: Stores the six original articles.
+// RU: Хранит шесть исходных статей.
 const initialArticles = [
   {
     id: 1,
@@ -76,16 +75,20 @@ const initialArticles = [
   },
 ]
 
-// EN: ref stores articles that can change and updates the page automatically.
-// RU: ref хранит изменяемые статьи и автоматически обновляет страницу.
+// EN: ref stores reactive data. Vue updates the page when articles change.
+// RU: ref хранит реактивные данные. Vue обновляет страницу при изменении статей.
 const articles = ref(initialArticles.map(article => ({ ...article })))
 
+// EN: computed updates the current page name when the route changes.
+// RU: computed обновляет название текущей страницы при смене маршрута.
 const screen = computed(() => route.name || 'home')
 
 const filter = ref('All')
 const editingId = ref(null)
 const showForm = ref(false)
 
+// EN: Creates an empty article form.
+// RU: Создаёт пустую форму статьи.
 const blankArticle = () => ({
   title: '',
   category: 'Fitness',
@@ -98,15 +101,15 @@ const blankArticle = () => ({
 
 const form = ref(blankArticle())
 
-// EN: computed finds the selected article using its ID from the URL.
-// RU: computed находит выбранную статью по её ID из адреса страницы.
+// EN: READ - Finds an article by its ID.
+// RU: READ - Находит статью по её ID.
 const selectedArticle = computed(() => {
   const id = Number(route.params.id)
   return articles.value.find(article => article.id === id)
 })
 
-// EN: These are the three website categories: Fitness, Nutrition and Wellbeing.
-// RU: Это три категории сайта: фитнес, питание и здоровый образ жизни.
+// EN: The three website categories.
+// RU: Три категории сайта.
 const categories = [
   {
     name: 'Fitness',
@@ -125,16 +128,22 @@ const categories = [
   }
 ]
 
+// EN: Vue Router navigates between pages without reloading the website.
+// RU: Vue Router переключает страницы без перезагрузки сайта.
 function navigate(to) {
   router.push({ name: to })
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// EN: Opens the article list with the selected category.
+// RU: Открывает список статей с выбранной категорией.
 function showArticles(category = 'All') {
   filter.value = category
   navigate('articles')
 }
 
+// EN: Opens the selected article.
+// RU: Открывает выбранную статью.
 function showArticle(article) {
   router.push({
     name: 'article',
@@ -144,12 +153,16 @@ function showArticle(article) {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// EN: Opens an empty form to add a new article.
+// RU: Открывает пустую форму для добавления статьи.
 function startAdd() {
   editingId.value = null
   form.value = blankArticle()
   showForm.value = true
 }
 
+// EN: Opens the form with the selected article's data.
+// RU: Открывает форму с данными выбранной статьи.
 async function startEdit(article) {
   editingId.value = article.id
 
@@ -166,14 +179,23 @@ async function startEdit(article) {
     ?.scrollIntoView({ behavior: 'smooth' })
 }
 
+// EN: Saves a new article or updates an existing article.
+// RU: Сохраняет новую статью или обновляет существующую.
 function saveArticle() {
   if (editingId.value === null) {
+
+    // EN: CREATE - Adds a new article using push().
+    // RU: CREATE - Добавляет новую статью с помощью push().
     articles.value.push({
       ...form.value,
       id: Math.max(0, ...articles.value.map(a => a.id)) + 1,
       image: form.value.image || '/images/fitness-original.png'
     })
+
   } else {
+
+    // EN: UPDATE - Updates an existing article using map().
+    // RU: UPDATE - Обновляет существующую статью с помощью map().
     articles.value = articles.value.map(article =>
       article.id === editingId.value
         ? { ...article, ...form.value }
@@ -186,6 +208,8 @@ function saveArticle() {
   form.value = blankArticle()
 }
 
+// EN: DELETE - Removes an article using filter() after confirmation.
+// RU: DELETE - Удаляет статью через filter() после подтверждения.
 function deleteArticle(article) {
   if (window.confirm(`Delete “${article.title}”?`)) {
     articles.value = articles.value.filter(a => a.id !== article.id)
@@ -205,8 +229,8 @@ function deleteArticle(article) {
       @navigate="navigate"
     />
 
-    <!-- EN: RouterView displays the current page and connects it to the article data. -->
-    <!-- RU: RouterView отображает текущую страницу и связывает её с данными статей. -->
+    <!-- EN: RouterView displays the current page. -->
+    <!-- RU: RouterView отображает текущую страницу. -->
     <RouterView v-slot="{ Component }">
       <component
         :is="Component"

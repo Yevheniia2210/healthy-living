@@ -19,6 +19,8 @@ defineProps({
   }
 })
 
+// EN: Emits sends events from AdminView.vue to parent App.vue.
+// RU: Emits отправляет события из AdminView.vue в App.vue.
 const emit = defineEmits([
   'add',
   'edit',
@@ -40,6 +42,8 @@ const emit = defineEmits([
           Admin Dashboard
         </h1>
 
+        <!-- EN: CREATE - Opens the form to add a new article. -->
+        <!-- RU: CREATE - Открывает форму добавления новой статьи. -->
         <button
           class="blue-button"
           @click="emit('add')"
@@ -52,6 +56,9 @@ const emit = defineEmits([
         <h2>Articles</h2>
 
         <div class="admin-list">
+
+          <!-- EN: READ - Displays the list of articles. -->
+          <!-- RU: READ - Показывает список статей. -->
           <div
             v-for="article in articles"
             :key="article.id"
@@ -66,10 +73,15 @@ const emit = defineEmits([
             </div>
 
             <div class="admin-actions">
+
+              <!-- EN: UPDATE - Opens the form to edit an article. -->
+              <!-- RU: UPDATE - Открывает форму редактирования статьи. -->
               <button @click="emit('edit', article)">
                 Edit
               </button>
 
+              <!-- EN: DELETE - Sends an event to delete an article. -->
+              <!-- RU: DELETE - Отправляет событие для удаления статьи. -->
               <button
                 class="delete-button"
                 @click="emit('delete', article)"
@@ -85,6 +97,8 @@ const emit = defineEmits([
         </div>
       </section>
 
+      <!-- EN: Shows the form when adding or editing an article. -->
+      <!-- RU: Показывает форму при добавлении или редактировании статьи. -->
       <section
         v-if="showForm"
         id="article-form"
@@ -94,6 +108,8 @@ const emit = defineEmits([
           {{ editingId === null ? 'Add Article' : 'Edit Article' }}
         </h2>
 
+        <!-- EN: Saves the article without reloading the page. -->
+        <!-- RU: Сохраняет статью без перезагрузки страницы. -->
         <form @submit.prevent="emit('save')">
           <label class="full-field">
             <span>Title</span>
