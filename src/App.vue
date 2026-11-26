@@ -4,6 +4,7 @@
 import { ref, computed, nextTick } from 'vue'
 import { useRouter, useRoute, RouterView } from 'vue-router'
 import SiteHeader from './components/SiteHeader.vue'
+import { RouterLink } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
@@ -125,7 +126,8 @@ const categories = [
     name: 'Wellbeing',
     text: 'Balance your body and mind.',
     image: '/images/yoga-original.png'
-  }
+  },
+
 ]
 
 // EN: Vue Router navigates between pages without reloading the website.
@@ -247,7 +249,7 @@ function deleteArticle(article) {
 
         @show-articles="showArticles"
         @read="showArticle"
-        @back="navigate('articles')"
+        @back="showArticles('All')"
 
         @add="startAdd"
         @edit="startEdit"
@@ -258,6 +260,11 @@ function deleteArticle(article) {
     </RouterView>
 
     <footer>
+
+      <RouterLink to="/about" class="footer-button">
+        About
+      </RouterLink>
+
       <p class="copyright">© 2026 Healthy Living</p>
     </footer>
 
