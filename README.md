@@ -113,3 +113,18 @@ https://github.com/Yevheniia2210/healthy-living
 ## Project Status
 
 The website includes working navigation, article browsing, search and filtering, article details, an Admin Dashboard, and responsive layouts.
+
+## Testing
+
+The Healthy Living website was tested using the Website Test Checklist.
+
+Testing covered form validation, navigation, responsive layouts and article management (Create, Read, Update and Delete).
+
+The website was tested at mobile (375 px), tablet (768 px) and desktop (1440 px) screen widths. Navigation, forms and article management worked correctly during testing.
+
+One test failed (F03), and one test was marked N/A (F04). The remaining tests passed.
+
+## Known Issues
+
+- F03: The Image URL field accepts invalid image paths without displaying a validation error. An invalid path may result in a broken image. Replacing it with a valid image path displays the image correctly.
+- Articles are stored in Vue reactive state and are reset when the browser page is refreshed. Permanent data storage is not implemented.
