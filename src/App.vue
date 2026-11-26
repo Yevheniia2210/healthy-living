@@ -261,10 +261,6 @@ function deleteArticle(article) {
 
     <footer>
 
-      <RouterLink to="/about" class="footer-button">
-        About
-      </RouterLink>
-
       <p class="copyright">© 2026 Healthy Living</p>
     </footer>
 
