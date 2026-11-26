@@ -38,6 +38,7 @@ const filteredArticles = computed(() =>
 <template>
   <main class="articles-page">
     <section class="hero home-hero">
+
       <h1>Healthy Living</h1>
     </section>
 

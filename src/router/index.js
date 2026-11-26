@@ -10,6 +10,8 @@ import ArticlesView from '../views/ArticlesView.vue'
 import ArticleDetailView from '../views/ArticleDetailView.vue'
 import AdminView from '../views/AdminView.vue'
 
+
+
 // EN: Define the routes and connect each URL to its page.
 // RU: Определяем маршруты и связываем каждый адрес с его страницей.
 const routes = [

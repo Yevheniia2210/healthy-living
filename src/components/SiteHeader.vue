@@ -33,6 +33,7 @@ const emit = defineEmits(['navigate'])
       >
         Admin
       </button>
+
     </nav>
   </header>
 </template>
