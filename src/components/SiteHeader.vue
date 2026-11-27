@@ -21,6 +21,13 @@ const emit = defineEmits(['navigate'])
       </button>
 
       <button
+              :class="{ active: screen === 'about' }"
+              @click="emit('navigate', 'about')"
+            >
+              About
+            </button>
+
+      <button
         :class="{ active: screen === 'articles' || screen === 'article' }"
         @click="emit('navigate', 'articles')"
       >

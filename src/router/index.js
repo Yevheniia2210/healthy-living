@@ -9,7 +9,7 @@ import HomeView from '../views/HomeView.vue'
 import ArticlesView from '../views/ArticlesView.vue'
 import ArticleDetailView from '../views/ArticleDetailView.vue'
 import AdminView from '../views/AdminView.vue'
-
+import AboutView from '../views/AboutView.vue'
 
 
 // EN: Define the routes and connect each URL to its page.
@@ -19,6 +19,12 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomeView
+    },
+
+    {
+        path: '/about',
+        name: 'about',
+        component: AboutView
     },
     {
         path: '/articles',
